@@ -121,6 +121,12 @@
   },
 
   {
+    "id": "vertuo-up",
+    "name": "Vertuo Up",
+    "technology": "VL",
+    "img": "https://www.nespresso.com//ecom/medias/sys_master/public/48336493969438/vertuo-up-front-white.png"
+  },
+  {
     "id": "vertuo-next",
     "name": "Vertuo Next",
     "technology": "VL",
@@ -155,12 +161,6 @@
     "name": "Vertuo Creatista",
     "technology": "VL",
     "img": "https://www.nespresso.com/shared_res/agility/commons/img/machines/Vertuo-Creatista_M.png"
-  },
-  {
-    "id": "vertuo-up",
-    "name": "Vertuo Up",
-    "technology": "VL",
-    "img": "https://www.nespresso.com//ecom/medias/sys_master/public/48336493969438/vertuo-up-front-white.png"
   },
 
   {

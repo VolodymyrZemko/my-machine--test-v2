@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '../../translations/translations.js';
-import machines from '../../data/machines.json';
 
 // GTM tracking
 const trackMyMachineLoginClick = () => {
@@ -68,7 +67,7 @@ const trackTroubleshootingClick = () => {
   // console.log('GTM Event: machine assistance - my machines - troubleshooting');
 };
 
-export function MyMachineSection({ onMachineClick, onSwitchToOL, onLoginChecked }) {
+export function MyMachineSection({ machines, onMachineClick, onSwitchToOL, onLoginChecked }) {
   const t = useTranslation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [memberId, setMemberId] = useState(null);
@@ -172,20 +171,20 @@ export function MyMachineSection({ onMachineClick, onSwitchToOL, onLoginChecked 
         const memberID = myCustomer.memberNumber || null;
 
         if (memberID) {
-          console.log("User is logged in:", memberID);
+          console.log("machine assistance User is logged in:", memberID);
           setMemberId(memberID);
           setIsLoggedIn(true);
           await fetchMachines();
           onLoginChecked(); // Mark login check as complete
         } else {
-          console.log("User is not logged in.");
+          console.log("machine assistance User is not logged in.");
           setIsLoggedIn(false);
           setLoadingUser(false);
           onLoginChecked(); // Mark login check as complete
         }
       } catch (error) {
         console.error("Error in checkUserLogin:", error);
-        console.log("User is not logged in.");
+        console.log("machine assistance User is not logged in.");
         setIsLoggedIn(false);
         setLoadingUser(false);
         onSwitchToOL(); // Switch to OL tab on error

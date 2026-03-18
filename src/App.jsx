@@ -1,12 +1,15 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import './App.css';
-import machines from './data/machines.json';
 import { useMachineRoute } from './modules/routing/useMachineRoute.js';
 import { MachineDetail } from './components/machines/MachineDetail.jsx';
 import { Footer } from './components/layout/Footer.jsx';
 import { Search } from './components/search/Search.jsx';
 import { MyMachineSection } from './components/myMachine/MyMachineSection.jsx';
 import { useTranslation } from './translations/translations.js';
+import { useMachinesCache } from './modules/cache/MachinesCacheContext.jsx';
+
+// External machines JSON URL (with fallback to machines.json)
+const MACHINES_URL = 'https://www.nespresso.com/shared_res/markets/gr/json/machine-assistance/machine-assistance-list.json';
 
 //GTM tracking
 const trackTabClick = (tabName) => {
@@ -36,11 +39,46 @@ const TECH_TABS = [
 
 export default function App() {
   const t = useTranslation();
+  const { fetchMachines, getCacheStatus } = useMachinesCache();
+  const [machines, setMachines] = useState([]);
+  const [machinesLoading, setMachinesLoading] = useState(true);
+  const [machinesError, setMachinesError] = useState(null);
   const [active, setActive] = useState(TECH_TABS[0].key);
   const [searchQuery, setSearchQuery] = useState('');
   const [hasCheckedLogin, setHasCheckedLogin] = useState(false);
   const { machineId, openMachine, closeMachine } = useMachineRoute();
   const activeMachine = machineId ? machines.find(m => m.id === machineId) : null;
+
+
+
+  // Fetch machines data (with fallback to machines.json)
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadMachines = async () => {
+      try {
+        setMachinesLoading(true);
+        setMachinesError(null);
+        
+        const data = await fetchMachines(MACHINES_URL);
+        
+        if (!cancelled) {
+          setMachines(data);
+          setMachinesLoading(false);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          const errorMsg = err.message || 'Failed to load machines';
+          setMachinesError(errorMsg);
+          setMachinesLoading(false);
+          console.error('Error loading machines:', errorMsg);
+        }
+      }
+    };
+
+    loadMachines();
+    return () => { cancelled = true; };
+  }, [fetchMachines, getCacheStatus]);
 
   // Save scroll position when opening a machine detail, restore when closing
   useEffect(() => {
@@ -70,7 +108,7 @@ export default function App() {
       const img = new Image();
       img.src = machine.img;
     });
-  }, []);
+  }, [machines]);
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -86,81 +124,118 @@ export default function App() {
 
   return (
     <div className="app-wrapper minimal">
-      {!activeMachine && (
-        <>
-          <Search 
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            searchResults={searchResults}
-            onMachineClick={handleMachineClick}
-          />
-          <div className="select-from-list-message">
-            {searchQuery.trim() && searchResults.length > 0 && (
-              <p className='search-more-title'>{t('didntFindWhat')}</p>
-            )}
-            <p className='select-from-list-title'>{t('selectFromList')}</p>
+      {/* Shimmer Loading state */}
+      {machinesLoading && (
+        <div className="shimmer-plp-container">
+          <div className="shimmer-search">
+            <div className="shimmer-box shimmer-search-input"></div>
           </div>
-          <div className="tabs-bar" role="tablist" aria-label="Machine categories">
-            {TECH_TABS.map(tab => (
-              <button
-                key={tab.key}
-                className={tab.key === active ? 'tab active' : 'tab'}
-                onClick={() => {
-                  setActive(tab.key);
-                  // Track tab click, GTM
-                  trackTabClick(tab.GTMlabelEN);
-                }}
-                role="tab"
-                aria-selected={tab.key === active}
-                aria-controls={`panel-${tab.key}`}
-                id={`tab-${tab.key}`}
-              >
-                <TabIcon icon={tab.icon} />
-                <span>{t(tab.label)}</span>
-              </button>
-            ))}
+          <div className="shimmer-tabs">
+            <div className="shimmer-tab"></div>
+            <div className="shimmer-tab"></div>
+            <div className="shimmer-tab"></div>
+            <div className="shimmer-tab"></div>
           </div>
-          <div className="tab-panel" role="tabpanel" id={`panel-${active}`} aria-labelledby={`tab-${active}`}>
-            {active === 'MY_MACHINE' ? (
-              <MyMachineSection 
-                onMachineClick={handleMachineClick} 
-                onSwitchToOL={() => {
-                  // Only switch if login hasn't been checked yet
-                  if (!hasCheckedLogin) {
-                    setActive('OL');
-                  }
-                }}
-                onLoginChecked={() => setHasCheckedLogin(true)}
-              />
-            ) : (
-              <>
-                <h2 className="sr-only">{t(TECH_TABS.find(tab => tab.key === active)?.label)}</h2>
-                <div className="machine-grid">
-                  {filtered.map(machine => (
-                    <div key={machine.id} className="machine-card">
-                      <a href={`#!/${machine.id}`} onClick={(e) => handleMachineClick(e, machine.id)}>
-                        <img 
-                          src={machine.img} 
-                          alt={machine.name}
-                          loading="eager"
-                        />
-                        <p>{machine.name}</p>
-                      </a>
-                    </div>
-                  ))}
-                  {filtered.length === 0 && <p>No machines.</p>}
-                </div>
-              </>
-            )}
+          <div className="shimmer-grid">
+            <div className="shimmer-card"></div>
+            <div className="shimmer-card"></div>
+            <div className="shimmer-card"></div>
+            <div className="shimmer-card"></div>
+            <div className="shimmer-card"></div>
+            <div className="shimmer-card"></div>
           </div>
-        </>
-      )}
-      {activeMachine && (
-        <div className="machine-detail-panel">
-          <MachineDetail machine={activeMachine} onClose={closeMachine} />
         </div>
       )}
-      <Footer activeMachine={activeMachine} />
+
+      {/* Error state */}
+      {machinesError && (
+        <div className="machines-error">
+          <p>Error: {machinesError}</p>
+          <button onClick={() => window.location.reload()}>Retry</button>
+        </div>
+      )}
+
+      {/* Main content - only show if machines loaded successfully */}
+      {!machinesLoading && !machinesError && (
+        <>
+          {!activeMachine && (
+            <>
+              <Search 
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                searchResults={searchResults}
+                onMachineClick={handleMachineClick}
+              />
+              <div className="select-from-list-message">
+                {searchQuery.trim() && searchResults.length > 0 && (
+                  <p className='search-more-title'>{t('didntFindWhat')}</p>
+                )}
+                <p className='select-from-list-title'>{t('selectFromList')}</p>
+              </div>
+              <div className="tabs-bar" role="tablist" aria-label="Machine categories">
+                {TECH_TABS.map(tab => (
+                  <button
+                    key={tab.key}
+                    className={tab.key === active ? 'tab active' : 'tab'}
+                    onClick={() => {
+                      setActive(tab.key);
+                      // Track tab click, GTM
+                      trackTabClick(tab.GTMlabelEN);
+                    }}
+                    role="tab"
+                    aria-selected={tab.key === active}
+                    aria-controls={`panel-${tab.key}`}
+                    id={`tab-${tab.key}`}
+                  >
+                    <TabIcon icon={tab.icon} />
+                    <span>{t(tab.label)}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="tab-panel" role="tabpanel" id={`panel-${active}`} aria-labelledby={`tab-${active}`}>
+                {active === 'MY_MACHINE' ? (
+                  <MyMachineSection 
+                    machines={machines}
+                    onMachineClick={handleMachineClick} 
+                    onSwitchToOL={() => {
+                      // Only switch if login hasn't been checked yet
+                      if (!hasCheckedLogin) {
+                        setActive('OL');
+                      }
+                    }}
+                    onLoginChecked={() => setHasCheckedLogin(true)}
+                  />
+                ) : (
+                  <>
+                    <h2 className="sr-only">{t(TECH_TABS.find(tab => tab.key === active)?.label)}</h2>
+                    <div className="machine-grid">
+                      {filtered.map(machine => (
+                        <div key={machine.id} className="machine-card">
+                          <a href={`#!/${machine.id}`} onClick={(e) => handleMachineClick(e, machine.id)}>
+                            <img 
+                              src={machine.img} 
+                              alt={machine.name}
+                              loading="eager"
+                            />
+                            <p>{machine.name}</p>
+                          </a>
+                        </div>
+                      ))}
+                      {filtered.length === 0 && <p>No machines.</p>}
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+          {activeMachine && (
+            <div className="machine-detail-panel">
+              <MachineDetail machine={activeMachine} onClose={closeMachine} />
+            </div>
+          )}
+          <Footer activeMachine={activeMachine} />
+        </>
+      )}
     </div>
   );
 }
