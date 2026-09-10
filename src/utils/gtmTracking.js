@@ -46,3 +46,19 @@ export const trackRegisterMachineClick = () => {
   });
 //   console.log('GTM Event: machine assistance - register your machine');
 };
+
+/**
+ * Track outside warranty "here" link click in footer
+ * Triggered when user opens the outside warranty service fees pop-up
+ */
+export const trackOutsideWarrantyClick = () => {
+  window.gtmDataObject = window.gtmDataObject || [];
+  window.gtmDataObject.push({
+    event: 'local_event', //as is, do not change!!
+    local_event_category: 'machine assistance', 
+    local_event_action:'click on outside warranty fees',
+    local_event_label:'here',    
+    event_raised_by:'local_market_gr'
+  });
+//   console.log('GTM Event: machine assistance - outside warranty fees');
+};

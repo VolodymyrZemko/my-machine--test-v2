@@ -70,7 +70,24 @@ export const translations = {
     returnDesc: "The machine will be returned back to the pick-up address and all repairs are covered with a six-month warranty.",
     machineRegistration: "MACHINE REGISTRATION",
     registrationDesc: "You can register your machine through the Nespresso website during the account registration process or by going to your account page and adding your machine registration in \"My Personal Information.\"",
-    registerMachine: "REGISTER YOUR MACHINE"
+    registerMachine: "REGISTER YOUR MACHINE",
+
+    // Footer - Outside Warranty
+    outsideWarrantyTitle: "MACHINE ASSISTANCE OUTSIDE WARRANTY",
+    outsideWarrantyDesc: "Even after your warranty has ended, our specialists remain available to support your Nespresso experience. If your machine is no longer covered by warranty and requires service or repair, a fee may apply. Service fees vary according to your Nespresso Club tier, and our team will always inform you of any applicable charges before proceeding.",
+    outsideWarrantyMoreInfo: "You can find more info about the machine service fees",
+    outsideWarrantyModalTitleLine1: "MACHINE ASSISTANCE",
+    outsideWarrantyModalTitleLine2: "OUTSIDE WARRANTY",
+    outsideWarrantyModalDesc: "To ensure your Nespresso machine continues to deliver the quality and performance you expect, our dedicated technicians remain available to assist whenever needed. For machines outside their warranty period, repairs and servicing may be subject to a fee. Pricing is tailored according to your Nespresso Club tier, with selected members enjoying preferential service rates.",
+    machineTechnology: "Machine technology",
+    price: "Price",
+    machineLoan: "Machine loan",
+    ambassador: "AMBASSADOR",
+    clubMember: "CLUB MEMBER",
+    original: "Original",
+    originalVertuo: "Original & Vertuo",
+    vertuo: "Vertuo",
+    closeModal: "Close"
   },
   el: {
     // Search
@@ -144,7 +161,24 @@ export const translations = {
     returnDesc: "Η μηχανή θα επιστραφεί στη διεύθυνση παραλαβής και όλες οι επισκευές καλύπτονται με εγγύηση έξι μηνών.",
     machineRegistration: "ΕΓΓΡΑΦΗ ΜΗΧΑΝΗΣ",
     registrationDesc: "Μπορείτε να καταχωρίσετε τη μηχανή σας μέσω του ιστότοπου Nespresso κατά τη διαδικασία εγγραφής λογαριασμού ή μεταβαίνοντας στη σελίδα του λογαριασμού σας και προσθέτοντας την καταχώριση της μηχανής σας στις \"Προσωπικές μου Πληροφορίες\".",
-    registerMachine: "ΚΑΤΑΧΩΡΙΣΤΕ ΤΗ ΜΗΧΑΝΗ ΣΑΣ"
+    registerMachine: "ΚΑΤΑΧΩΡΙΣΤΕ ΤΗ ΜΗΧΑΝΗ ΣΑΣ",
+
+    // Footer - Outside Warranty
+    outsideWarrantyTitle: "ΥΠΟΣΤΗΡΙΞΗ ΜΗΧΑΝΩΝ ΕΚΤΟΣ ΕΓΓΥΗΣΗΣ",
+    outsideWarrantyDesc: "Ακόμα και μετά τη λήξη της εγγύησής σου, οι specialists μας είναι πάντα διαθέσιμοι για να σε βοηθήσουν με την εμπειρία σου στη Nespresso. Αν η μηχανή σου δεν καλύπτεται πλέον από εγγύηση και χρειάζεται σέρβις ή επισκευή, μπορεί να υπάρξει κάποια χρέωση. Οι χρεώσεις διαφέρουν ανάλογα με τη βαθμίδα στο Nespresso Club, και η ομάδα μας θα σε ενημερώσει για τυχόν χρεώσεις πριν προχωρήσουμε.",
+    outsideWarrantyMoreInfo: "Μπορείς να δεις περισσότερες πληροφορίες για τις χρεώσεις σέρβις των μηχανών",
+    outsideWarrantyModalTitleLine1: "ΥΠΟΣΤΗΡΙΞΗ ΜΗΧΑΝΩΝ",
+    outsideWarrantyModalTitleLine2: "ΕΚΤΟΣ ΕΓΓΥΗΣΗΣ",
+    outsideWarrantyModalDesc: "Για να διασφαλίσουμε ότι η μηχανή Nespresso συνεχίζει να προσφέρει την ποιότητα και την απόδοση που περιμένεις, οι αφιερωμένοι τεχνικοί μας είναι πάντα διαθέσιμοι να βοηθήσουν όποτε χρειάζεται. Για μηχανές εκτός περιόδου εγγύησης, οι επισκευές και η συντήρηση μπορεί να έχουν κόστος. Οι τιμές προσαρμόζονται ανάλογα με τη βαθμίδα σου στο Nespresso Club, με τους Ambassadors να απολαμβάνουν προνομιακές τιμές υπηρεσιών.",
+    machineTechnology: "ΤΕΧΝΟΛΟΓΙΑ ΜΗΧΑΝΗΣ",
+    price: "ΤΙΜΗ",
+    machineLoan: "ΠΡΟΣΩΡΙΝΗ ΜΗΧΑΝΗ",
+    ambassador: "AMBASSADOR",
+    clubMember: "CLUB MEMBER",
+    original: "Original",
+    originalVertuo: "Original & Vertuo",
+    vertuo: "Vertuo",
+    closeModal: "Κλείσιμο"
   }
 };
 

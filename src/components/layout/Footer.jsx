@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '../../translations/translations.js';
 import { useInView } from 'react-intersection-observer';
 import * as GTMTracking from '../../utils/gtmTracking.js';
+import { OutsideWarrantyModal } from './OutsideWarrantyModal.jsx';
 import './Footer.css';
 
 // Footer icon component using nb-icon web component
@@ -11,6 +12,7 @@ const FooterIcon = ({ icon }) => {
 
 export function Footer({ activeMachine }) {
   const t = useTranslation();
+  const [isOutsideWarrantyModalOpen, setIsOutsideWarrantyModalOpen] = useState(false);
   
   // GTM footer tracking: IntersectionObserver
   const { ref: footerRef, inView: isFooterInView } = useInView({
@@ -107,6 +109,24 @@ export function Footer({ activeMachine }) {
           </div>
         </div>
 
+        <div className="outside-warranty">
+          <div className="section-wrapper">
+            <p className="outside-warranty-title">{t('outsideWarrantyTitle')}</p>
+            <p>{t('outsideWarrantyDesc')}</p>
+            <p>
+              {t('outsideWarrantyMoreInfo')}{' '}
+              <button
+                type="button"
+                className="outside-warranty-link"
+                onClick={() => {
+                  GTMTracking.trackOutsideWarrantyClick();
+                  setIsOutsideWarrantyModalOpen(true);
+                }}
+              >{t('here')}</button>.
+            </p>
+          </div>
+        </div>
+
         <div className="machine-registration">
           <div className="section-wrapper">
             <p className="registration-title">{t('machineRegistration')}</p>
@@ -121,6 +141,10 @@ export function Footer({ activeMachine }) {
         </div>
 
       </div>
+
+      {isOutsideWarrantyModalOpen && (
+        <OutsideWarrantyModal onClose={() => setIsOutsideWarrantyModalOpen(false)} />
+      )}
     </footer>
   );
 }

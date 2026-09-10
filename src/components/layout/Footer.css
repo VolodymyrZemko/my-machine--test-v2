@@ -153,6 +153,35 @@ font-weight: 700;
   margin-top: 2rem;
 }
 
+.app-footer .outside-warranty {
+    background-color: #d8d2c3;
+    padding: 0 0 50px 0;
+}
+
+.app-footer .outside-warranty-title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16.8px;
+    letter-spacing: 2px;
+    color: #6F6F70;
+}
+
+.app-footer .outside-warranty-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: #333;
+    text-decoration: underline;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.app-footer .outside-warranty-link:hover {
+    color: #000;
+}
+
 @media (max-width: 768px) {
   .app-footer .features {
     grid-template-columns: 1fr;
